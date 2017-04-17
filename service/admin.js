@@ -46,7 +46,8 @@ class adminService {
           })
           res.json({
             statusCode: 2000000,
-            message: "注册管理员成功"
+            message: "注册管理员成功",
+            data: creatUser
           })
         } catch (error) {
           res.json(errorFn(error))
@@ -75,9 +76,11 @@ class adminService {
       let isContainUser = await Admin.findOne({username,password})
       if (isContainUser) {
         req.session.userId = md5(`${secretServ}${username}`)
+        req.session.user = username
         res.send({
           statusCode: 2000000,
-          message: "登陆成功"
+          message: "登陆成功",
+          data: isContainUser
         })
       } else {
         res.send({
@@ -89,6 +92,13 @@ class adminService {
     } catch (error) {
       res.json(errorFn(error))
     }
+  }
+
+  checkLogin (req, res) {
+      res.send({
+        statusCode: 2000000,
+        message: "登陆成功"
+      })
   }
 
 }
