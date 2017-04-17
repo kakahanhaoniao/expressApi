@@ -32,7 +32,7 @@ app.use(session({
 
 app.all('*', (req, res, next) => {
   debugger
-  if (!req.url.match(/\/login$/) && !req.session.userId) {
+  if (!req.url.match(/\/(login|regist)$/) && !req.session.userId) {
     res.json({
       statusCode: 2000403,
       message: errorMessge['2000403']
