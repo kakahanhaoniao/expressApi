@@ -47,7 +47,7 @@ class adminService {
           res.json({
             statusCode: 2000000,
             message: "注册管理员成功",
-            data: creatUser
+            data: username
           })
         } catch (error) {
           res.json(errorFn(error))
@@ -64,6 +64,7 @@ class adminService {
 
   logOut (req, res) {
     req.session.destroy();
+    res.cookie('user', '', { maxAge: -1 })
     res.send({
       statusCode: 2000000,
       message: "退出成功"
@@ -80,7 +81,7 @@ class adminService {
         res.send({
           statusCode: 2000000,
           message: "登陆成功",
-          data: isContainUser
+          data: username
         })
       } else {
         res.send({
