@@ -64,7 +64,6 @@ class adminService {
 
   logOut (req, res) {
     req.session.destroy();
-    res.cookie('user', '', { maxAge: -1 })
     res.send({
       statusCode: 2000000,
       message: "退出成功"
