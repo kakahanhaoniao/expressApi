@@ -2,7 +2,6 @@ let express = require('express');
 let app = express()
 let md5 = require('md5')
 let compression = require('compression')
-let path = require('path')
 let logger = require('morgan')
 let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
@@ -13,9 +12,22 @@ require('./model/rootAdmin')
 require('./model/product')
 require('./model/user')
 let {adminRouter, userRouter, productRouter} = require('./router/router')
+let fs = require('fs')
+let path = require('path')
+let rfs = require('rotating-file-stream')
+
+var logDirectory = path.join(__dirname, 'logs')
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+
+// create a rotating write stream
+var accessLogStream = rfs('access.log', {
+  interval: '2d', // rotate daily
+  path: logDirectory
+})
 
 app.use(compression())
-app.use(logger('dev'))
+app.use(logger(':remote-addr - :remote-user [:date[clf]] ":method HTTP/:http-version :url :req[body] " :status :res[content-length] -- :response-time[digits] ms', {stream: accessLogStream}))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())

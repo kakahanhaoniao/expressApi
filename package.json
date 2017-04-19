@@ -10,10 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.2",
-    "mongoose": "^4.9.4",
-    "md5": "^2.2.1",
+    "express-session": "^1.15.2",
+    "fs": "0.0.1-security",
     "jsonwebtoken": "^7.3.0",
-    "express-session": "^1.15.2"
+    "md5": "^2.2.1",
+    "mongoose": "^4.9.4",
+    "path": "^0.12.7",
+    "rotating-file-stream": "^1.2.1"
   },
   "devDependencies": {
     "body-parser": "^1.16.0",
