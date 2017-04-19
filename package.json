@@ -14,7 +14,9 @@
     "jsonwebtoken": "^7.3.0",
     "log4js": "^1.1.1",
     "md5": "^2.2.1",
-    "mongoose": "^4.9.4"
+    "mongoose": "^4.9.4",
+    "node-statsd": "^0.1.1",
+    "response-time": "^2.3.2"
   },
   "devDependencies": {
     "body-parser": "^1.16.0",
