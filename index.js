@@ -41,18 +41,22 @@ app.use(responseTime(function (req, res, time) {
   logger.info(`${req.method} ${req.protocol} ${req.ip} ${req.originalUrl} ${JSON.stringify(req.body)} ${req.headers['user-agent']}  ${res.statusCode}   ${time}ms`)
 }))
 
-// TODo
+// TODO
 app.all('*', (req, res, next) => {
-  debugger
-  if (!req.url.match(/\/(login|regist)$/) && !req.session.userId) {
-    res.json({
-      statusCode: 2000403,
-      message: errorMessge['2000403']
+    res.set('connection', 'keep-alive');
+    console.log(req);
+    req.on('data', (chunk) => {
+        console.log(chunk);
     })
-  } else {
-    next()
-  }
-  console.log('拦截器一枚')
+    if (!req.url.match(/\/(login|regist)$/) && !req.session.userId) {
+        res.json({
+            statusCode: 2000403,
+            message: errorMessge['2000403']
+        })
+    } else {
+        next()
+    }
+    console.log('拦截器一枚')
 })
 
 
