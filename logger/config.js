@@ -1,6 +1,6 @@
-const express = require('express');
+const koa = require('koa');
 const log4js = require('log4js');
-const app = express();
+const app = new koa();
 
 log4js.configure({
     appenders: [

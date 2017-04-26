@@ -6,7 +6,7 @@ const bodyparser = require('koa-bodyparser');
 const json = require('koa-json');
 const path = require('path');
 const static = require('koa-static');
-const logger = require('koa-logger');
+const logger = require('./logger/config')('access');
 const session = require('koa-session');
 const errorMessge = require('./config/statusCode');
 let indexRouter = require('./router/router');
@@ -19,7 +19,6 @@ const sessionConf = {
 }
 app.keys = ['some secret hurr'];
 app.use(convert(bodyparser()));
-app.use(convert(logger()));
 app.use(convert(json()));
 app.use(static(path.join(__dirname, 'dist')));
 app.use(convert(session(sessionConf, app)));
@@ -37,7 +36,7 @@ app.use(async function (ctx, next) {
         await next();
     }
     ms = new Date() - start;
-    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+    logger.info(`${ctx.method} ${ctx.protocol} ${ctx.ip} ${ctx.originalUrl} ${JSON.stringify(ctx.request.body)} ${ctx.headers['user-agent']}  ${ctx.status}   ${ms}ms`)
     if (ctx.status === 404) {
         const err = new Error('Not Found');
         ctx.body = {
