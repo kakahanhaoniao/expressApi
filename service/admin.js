@@ -81,7 +81,6 @@ class adminService {
     }
 
     async login(ctx) {
-        debugger;
         let {
             username,
             password
