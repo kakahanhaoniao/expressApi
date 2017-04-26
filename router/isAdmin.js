@@ -1,15 +1,16 @@
-let md5 = require('md5')
-let config = require('../config/secret')
-let secretServ = config.secretServer
-module.exports = (req, res, next) => {
-    let userId = req.session.userId
-    let user =  req.session.user
-    if ( userId && md5(`${secretServ}${username}`) == userId) {
-        next()
+const md5 = require('md5');
+const config = require('../config/secret');
+const secretServ = config.secretServer;
+const errorMessge = require('../config/statusCode');
+module.exports = (ctx, next) => {
+    const userId = ctx.session.userId;
+    const user = ctx.session.user;
+    if (userId && md5(`${secretServ}${username}`) == userId) {
+        next();
     } else {
-        res.send({
-          statusCode: 2000403,
-          message: errorMessge['2000403']
-        })
+        ctx.body = {
+            statusCode: 2000403,
+            message: errorMessge['2000403']
+        };
     }
 }

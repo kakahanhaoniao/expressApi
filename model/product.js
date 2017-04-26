@@ -1,5 +1,5 @@
-let mongoose = require('../mongoConfig')
-let Schema = mongoose.Schema
+let mongoose = require('../mongoConfig');
+let Schema = mongoose.Schema;
 
 let ProductSchema = new Schema({
     title: String,
@@ -9,8 +9,8 @@ let ProductSchema = new Schema({
     creat_date: {type: Date, default: Date.now},
     update_date: {type: Date, default: Date.now},
     is_delete: Boolean
-})
+});
 
-let Product = mongoose.model('Product', ProductSchema)
+let Product = mongoose.model('Product', ProductSchema);
 
-module.exports = Product
+module.exports = Product;

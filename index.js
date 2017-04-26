@@ -1,80 +1,52 @@
-let express = require('express');
-let app = express()
-let md5 = require('md5')
-let compression = require('compression')
-let path = require('path')
-// let logger = require('morgan')
-let cookieParser = require('cookie-parser')
-let bodyParser = require('body-parser')
-let session = require('express-session')
-let port = 3000
-const errorMessge =  require('./config/statusCode')
-let logger = require('./logger/config')('access')
-require('./model/rootAdmin')
-require('./model/product')
-require('./model/user')
-let {adminRouter, userRouter, productRouter} = require('./router/router')
-var responseTime = require('response-time')
-var StatsD = require('node-statsd')
-var stats = new StatsD()
+const koa = require('koa');
+const app = new koa();
+const router = require('koa-router')();
+const convert = require('koa-convert');
+const bodyparser = require('koa-bodyparser');
+const json = require('koa-json');
+const path = require('path');
+const static = require('koa-static');
+const logger = require('koa-logger');
+const session = require('koa-session');
+const errorMessge = require('./config/statusCode');
+let indexRouter = require('./router/router');
+const sessionConf = {
+    key: 'xiaoshao',/** (string) cookie key (default is koa:sess) */
+    maxAge: 86400000,/** (number) maxAge in ms (default is 1 days) */
+    overwrite: true,/** (boolean) can overwrite or not (default true) */
+    httpOnly: true,/** (boolean) httpOnly or not (default true) */
+    signed: true,/** (boolean) signed or not (default true) */
+}
+app.keys = ['some secret hurr'];
+app.use(convert(bodyparser()));
+app.use(convert(logger()));
+app.use(convert(json()));
+app.use(static(path.join(__dirname, 'dist')));
+app.use(convert(session(sessionConf, app)));
 
-stats.socket.on('error', function (error) {
-  console.error(error.stack)
-})
-
-
-app.use(compression())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'dist')))
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  secret: 'xiaoshao',
-  resave: false,
-  key: 'userId',
-  saveUninitialized: true,
-  cookie: { secure: false, expires:1000*60*60*24 }
-}))
-
-app.use(responseTime(function (req, res, time) {
-  logger.info(`${req.method} ${req.protocol} ${req.ip} ${req.originalUrl} ${JSON.stringify(req.body)} ${req.headers['user-agent']}  ${res.statusCode}   ${time}ms`)
-}))
-
-// TODO
-app.all('*', (req, res, next) => {
-    res.set('connection', 'keep-alive');
-    console.log(req);
-    req.on('data', (chunk) => {
-        console.log(chunk);
-    })
-    if (!req.url.match(/\/(login|regist)$/) && !req.session.userId) {
-        res.json({
+app.use(async function (ctx, next) {
+    debugger;
+    const start = new Date();
+    let ms = 0;
+    if (!ctx.req.url.match(/\/(login|regist)$/) && !ctx.session.userId) {
+        ctx.body = {
             statusCode: 2000403,
             message: errorMessge['2000403']
-        })
+        }
     } else {
-        next()
+        await next();
     }
-    console.log('拦截器一枚')
-})
-
-
-app.use('/api',adminRouter)
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    debugger
-    var err = new Error('Not Found')
-    err.status = 404
-    next(err)
-})
-
-app.use(function(err, req, res) {
-    res.status(err.status || 500)
-    res.send(err.message)
-})
-
-app.listen(port, function () {
-  console.log('Example app listening on port 3000!');
+    ms = new Date() - start;
+    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+    if (ctx.status === 404) {
+        const err = new Error('Not Found');
+        ctx.body = {
+            status: err.status,
+            message: err.message
+        }
+    }
 });
+
+app.use(indexRouter.routes());
+
+app.listen(3000);

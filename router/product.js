@@ -1,12 +1,11 @@
-let express = require('express')
-let appRouter = express()
-let productApp = express()
-let product = require('../service/product')
+const router = require('koa-router');
+const appRouter = new router({
+    prefix: '/product'
+});
+let product = require('../service/product');
 
-appRouter.post('/add', admin.add)
-appRouter.post('/update', admin.update)
-appRouter.get('/delete', admin.delete)
+appRouter.post('/add', admin.add);
+appRouter.post('/update', admin.update);
+appRouter.get('/delete', admin.delete);
 
-productApp.use('/product', appRouter)
-
-module.exports = productApp
+module.exports = appRouter;

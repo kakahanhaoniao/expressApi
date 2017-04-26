@@ -1,12 +1,8 @@
-let express = require('express')
-let app = express()
+const router = require('koa-router');
+const indexRouter = new router();
 let adminRouter = require('./admin')
 // let userRouter = require('./user')
 // let productRouter = require('./product')
 
-exports.adminRouter = adminRouter
-
-// exports = {
-//   // userRouter,
-//   // productRouter
-// }
+indexRouter.use('/api', adminRouter.routes(), router().allowedMethods());
+module.exports = indexRouter

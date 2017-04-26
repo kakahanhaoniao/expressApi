@@ -1,5 +1,5 @@
-let mongoose = require('../mongoConfig')
-let Schema = mongoose.Schema
+let mongoose = require('../mongoConfig');
+let Schema = mongoose.Schema;
 
 let RootUserSchema = new Schema({
     username: String,
@@ -8,8 +8,8 @@ let RootUserSchema = new Schema({
     creat_date: {type: Date, default: Date.now},
     update_date: {type: Date, default: Date.now},
     is_delete: Boolean
-})
+});
 
-let RootUser = mongoose.model('RootUser', RootUserSchema)
+let RootUser = mongoose.model('RootUser', RootUserSchema);
 
-module.exports = RootUser
+module.exports = RootUser;
