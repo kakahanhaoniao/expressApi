@@ -84,3 +84,9 @@ app.on('error', (error) => {
         }
     }
 });
+
+// 全局错误捕获
+process.on('uncaughtException', function(err){
+    appLog.error(`got an error:${error.message}`);
+    process.exit(1);
+});
