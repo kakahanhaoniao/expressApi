@@ -28,10 +28,9 @@ class adminService {
             email
         } = ctx.request.body;
         if (!username || !password || !email) {
-            ctx.body = {
-                statusCode: 2001003,
-                message: errorMessge['2001003']
-            };
+            ctx.error({
+                statusCode: 2001003
+            });
         }
         try {
             let isContainUser = await Admin.findOne({
@@ -42,10 +41,9 @@ class adminService {
                 }]
             });
             if (isContainUser) {
-                ctx.body = {
-                    statusCode: 2001001,
-                    message: errorMessge['2001001']
-                };
+                ctx.error({
+                    statusCode: 2001001
+                });
             } else {
                 try {
                     let creatUser = await Admin.create({
@@ -54,17 +52,17 @@ class adminService {
                         email,
                         is_delete: false
                     });
-                    ctx.body = {
+                    ctx.success({
                         statusCode: 2000000,
                         message: "注册管理员成功",
                         data: username
-                    };
+                    });
                 } catch (error) {
-                    ctx.body = errorFn(error);
+                    ctx.error(errorFn(error));
                 }
             }
         } catch (error) {
-            ctx.body = errorFn(error);
+            ctx.error(errorFn(error));
         }
     }
 
@@ -74,10 +72,10 @@ class adminService {
 
     logOut(ctx) {
         ctx.session.destroy();
-        ctx.body = {
+        ctx.success({
             statusCode: 2000000,
             message: "退出成功"
-        };
+        });
     }
 
     async login(ctx) {
@@ -93,28 +91,27 @@ class adminService {
             if (isContainUser) {
                 ctx.session.userId = md5(`${secretServ}${username}`);
                 ctx.session.user = username;
-                ctx.body = {
+                ctx.success({
                     statusCode: 2000000,
                     message: "登陆成功",
                     data: username
-                };
+                });
             } else {
-                ctx.body = {
-                    statusCode: 2001004,
-                    message: errorMessge['2001004']
-                };
+                ctx.error({
+                    statusCode: 2001004
+                });
             }
 
         } catch (error) {
-            ctx.body = errorFn(error);
+            ctx.error(errorFn(error));
         }
     }
 
     checkLogin(ctx) {
-        ctx.body = {
+        ctx.success({
             statusCode: 2000000,
             message: "登陆成功"
-        };
+        });
     }
 
 }
