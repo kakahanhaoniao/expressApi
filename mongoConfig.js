@@ -4,7 +4,7 @@ let mongo = mongoose.connect('mongodb://localhost/xiaoshaoTest');
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', function () {
-  logger.error('Mongoose default connection open to ');
+  logger.info('Mongoose default connection open to ');
 });
 
 // If the connection throws an error
