@@ -15,7 +15,7 @@ let obj = { root: 'c://',
     base: '123.html',
     ext: '.html',
     name: '123'
- }
+}
 let format = path.format(obj);
 console.log(`${__dirname}/${__filename} --  \n
     filename:${pt} \n
