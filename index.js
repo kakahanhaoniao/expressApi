@@ -14,6 +14,8 @@ const errorMessge = require('./config/statusCode');
 let indexRouter = require('./router/router');
 const responseControl = require('./middlewares/response');
 const error = require('koa-json-error');
+
+
 const sessionConf = {
     key: 'xiaoshao',
     /** (string) cookie key (default is koa:sess) */
