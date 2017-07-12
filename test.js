@@ -2,6 +2,14 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
+const execSync = require('child_process').execSync
+try {
+    const res = execSync('eslint');
+
+    console.log(process.env);
+} catch (e) {
+    throw e;
+}
 /**
 path 和url 模块，用于处理路径和url的常用一些方法
 **/

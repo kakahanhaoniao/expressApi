@@ -17,6 +17,17 @@ const sessionConf = {
     httpOnly: true,/** (boolean) httpOnly or not (default true) */
     signed: true/** (boolean) signed or not (default true) */
 }
+const easyMonitor = require('easy-monitor');
+
+easyMonitor({
+    project_name: 'Game Boy',
+    cluster: true,
+    bootstrap: 'embrace',
+    embrace: {
+        tcp_host: '127.0.0.1',
+        tcp_port: 30000
+    }
+});
 app.keys = ['some secret hurr'];
 app.use(convert(bodyparser()));
 app.use(convert(json()));

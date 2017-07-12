@@ -8,6 +8,8 @@ let cookieParser = require('cookie-parser')
 let bodyParser = require('body-parser')
 let session = require('express-session')
 let port = 3000
+
+
 const errorMessge =  require('./config/statusCode')
 let logger = require('./logger/config')('access')
 require('./model/rootAdmin')
@@ -19,7 +21,7 @@ var StatsD = require('node-statsd')
 var stats = new StatsD()
 
 stats.socket.on('error', function (error) {
-  console.error(error.stack)
+    console.error(error.stack)
 })
 
 
@@ -30,15 +32,15 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'dist')))
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
-  secret: 'xiaoshao',
-  resave: false,
-  key: 'userId',
-  saveUninitialized: true,
-  cookie: { secure: false, expires:1000*60*60*24 }
+    secret: 'xiaoshao',
+    resave: false,
+    key: 'userId',
+    saveUninitialized: true,
+    cookie: { secure: false, expires:1000*60*60*24 }
 }))
 
 app.use(responseTime(function (req, res, time) {
-  logger.info(`${req.method} ${req.protocol} ${req.ip} ${req.originalUrl} ${JSON.stringify(req.body)} ${req.headers['user-agent']}  ${res.statusCode}   ${time}ms`)
+    logger.info(`${req.method} ${req.protocol} ${req.ip} ${req.originalUrl} ${JSON.stringify(req.body)} ${req.headers['user-agent']}  ${res.statusCode}   ${time}ms`)
 }))
 
 // TODO
@@ -76,5 +78,5 @@ app.use(function(err, req, res) {
 })
 
 app.listen(port, function () {
-  console.log('Example app listening on port 3000!');
+    console.log('Example app listening on port 3000!');
 });
