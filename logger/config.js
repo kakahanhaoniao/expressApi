@@ -6,7 +6,7 @@ log4js.configure({
     appenders: [
         { type: 'console' },
         {
-            type: 'DateFile',
+            type: 'dateFile',
             filename: 'logs/access.log',
             pattern: '-yyyy-MM-dd.log',
             alwaysIncludePattern: true,
