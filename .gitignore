@@ -7,3 +7,4 @@ node_modules/*
 logs/access.log
 logs/access.log-2017-04-19.log
 logs/
+ecosystem.config.js
