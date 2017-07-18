@@ -6,3 +6,4 @@ node_modules/*
 .DS_Store
 logs/access.log
 logs/access.log-2017-04-19.log
+logs/
