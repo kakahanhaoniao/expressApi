@@ -56,7 +56,7 @@ app.all('*', (req, res, next) => {
     } else {
         next()
     }
-    console.log(process.PWD)
+    console.log('拦截器一枚')
 })
 
 
